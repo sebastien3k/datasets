@@ -12,9 +12,9 @@ df = df[df['party_simplified'].isin(['DEMOCRAT', 'REPUBLICAN'])]
 # Group by year and party and sum the votes
 votes_by_party_year = df.groupby(['year', 'party_simplified'])['candidatevotes'].sum().unstack()
 
-# Get the candidates for even decades
-decades = [1980, 1990, 2000, 2010, 2020]
-candidates = df[df['year'].isin(decades)].groupby(['year', 'party_simplified'])['candidate'].first().unstack()
+# Get the candidates for presidential election years
+election_years = [1980, 1984, 1988, 1992, 1996, 2000, 2004, 2008, 2012, 2016, 2020]
+candidates = df[df['year'].isin(election_years)].groupby(['year', 'party_simplified'])['candidate'].first().unstack()
 
 # Plot the data
 plt.figure(figsize=(12, 6))
@@ -22,14 +22,18 @@ plt.plot(votes_by_party_year.index, votes_by_party_year['DEMOCRAT'], label='Demo
 plt.plot(votes_by_party_year.index, votes_by_party_year['REPUBLICAN'], label='Republican', color='red')
 
 # Annotate the points
-for year in decades:
+for year in election_years:
     if year in votes_by_party_year.index:
-        plt.annotate(f"{candidates.loc[year, 'DEMOCRAT']}", 
-                     (year, votes_by_party_year.loc[year, 'DEMOCRAT']),
-                     textcoords="offset points", xytext=(-10,10), ha='center', color='blue')
-        plt.annotate(f"{candidates.loc[year, 'REPUBLICAN']}", 
-                     (year, votes_by_party_year.loc[year, 'REPUBLICAN']),
-                     textcoords="offset points", xytext=(10,-10), ha='center', color='red')
+        # Annotate Democrat candidate
+        if 'DEMOCRAT' in votes_by_party_year.columns and not pd.isna(candidates.loc[year, 'DEMOCRAT']):
+            plt.annotate(f"{candidates.loc[year, 'DEMOCRAT']}", 
+                         (year, votes_by_party_year.loc[year, 'DEMOCRAT']),
+                         textcoords="offset points", xytext=(-10,10), ha='center', color='blue')
+        # Annotate Republican candidate
+        if 'REPUBLICAN' in votes_by_party_year.columns and not pd.isna(candidates.loc[year, 'REPUBLICAN']):
+            plt.annotate(f"{candidates.loc[year, 'REPUBLICAN']}", 
+                         (year, votes_by_party_year.loc[year, 'REPUBLICAN']),
+                         textcoords="offset points", xytext=(10,-10), ha='center', color='red')
 
 # Add labels and title
 plt.xlabel('Year')
@@ -41,7 +45,7 @@ plt.grid(True)
 # Show the plot
 plt.show()
 
-
+# Termux specific graph rendering
 # Define the directory and the filename.
 directory = os.path.join(os.environ["HOME"], "storage", "shared", "dataviz")
 filename = "votes_by_year_v2.png"
