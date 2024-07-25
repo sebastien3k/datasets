@@ -1,4 +1,4 @@
-# US Presidential Elections Data Visualization (1976-2020)
+# us-pres
 
 This Python script analyzes and visualizes data from US presidential elections from 1976 to 2020. It generates six different plots to showcase various trends and patterns in the election data, combines these plots into a single image, and provides functionality to view the results on a Termux environment.
 
