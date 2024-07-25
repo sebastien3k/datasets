@@ -10,12 +10,12 @@ from tqdm import tqdm
 df = pd.read_csv('1976-2020-president.csv')
 
 # Create a directory to save plots
-save_dir = '/storage/emulated/0/Download/election_plots_c/'
+save_dir = '/storage/emulated/0/Download/election_plots_d/'
 os.makedirs(save_dir, exist_ok=True)
 
 plot_files = []
 
-# List of plot functions
+# Define plot functions
 def plot_total_votes(df):
     plt.figure(figsize=(10, 6))
     df_yearly = df.groupby('year')['totalvotes'].sum().reset_index()
@@ -68,6 +68,7 @@ def plot_top_third_party_candidates(df):
     plt.xticks(rotation=45, ha='right')
     return 'top_third_party_candidates.png'
 
+# List of plot functions
 plot_functions = [
     plot_total_votes,
     plot_party_vote_share,
@@ -109,7 +110,7 @@ new_im.save(final_image, 'PNG')
 
 # Run termux-media-scan on all files with progress bar
 all_files = plot_files + [final_image]
-for file in tqdm(all_files, desc="Scanning media files"):
+for file in tqdm(all_files, desc="Running media scan"):
     subprocess.run(['termux-media-scan', file])
 
 print("Media scan completed")
