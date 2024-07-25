@@ -10,7 +10,7 @@ from tqdm import tqdm
 df = pd.read_csv('1976-2020-president.csv')
 
 # Create a directory to save plots
-save_dir = '/storage/emulated/0/Download/election_plots/'
+save_dir = '/storage/emulated/0/Download/election_plots_c/'
 os.makedirs(save_dir, exist_ok=True)
 
 plot_files = []
